@@ -32,7 +32,7 @@ body{
 
 .left,
 .right{
-  width:23%;
+  width:24%;
   display:flex;
   flex-direction:column;
   gap:20px;
@@ -47,6 +47,7 @@ body{
   justify-content:center;
   align-items:center;
   position:relative;
+  overflow:hidden;
 }
 
 .card{
@@ -131,35 +132,74 @@ button{
   color:white;
 }
 
-input{
-  border:none;
-  border-radius:10px;
-  background:#181818;
-  color:#00ff95;
-  padding:10px;
-  font-size:20px;
-  font-weight:bold;
-  outline:none;
-}
-
-.percent-input{
-  width:90px;
-  text-align:center;
-}
-
-.meta-title{
-  width:100%;
-  background:#181818;
-  color:red;
-  text-align:center;
-}
-
 #ultimaLigacao{
   position:absolute;
   top:40px;
   font-size:28px;
   color:#00ff95;
   font-weight:bold;
+}
+
+table input{
+  border:none;
+  background:transparent;
+  text-align:center;
+  font-weight:bold;
+  outline:none;
+  width:55px;
+}
+
+.metaIdeal{
+  width:70px;
+  color:black;
+  font-size:20px;
+}
+
+.verde{
+  color:#00c853;
+}
+
+.vermelho{
+  color:red;
+}
+
+.confete{
+  position:absolute;
+  width:12px;
+  height:12px;
+  top:-20px;
+  animation:fall linear forwards;
+}
+
+@keyframes fall{
+
+  to{
+    transform:translateY(120vh) rotate(720deg);
+    opacity:0;
+  }
+
+}
+
+#metaBatida{
+
+  position:absolute;
+  top:45%;
+  font-size:70px;
+  font-weight:bold;
+  color:#00ff95;
+  z-index:999;
+  display:none;
+  animation:pulse 1s infinite;
+  text-shadow:0 0 20px #00ff95;
+
+}
+
+@keyframes pulse{
+
+  50%{
+    transform:scale(1.08);
+  }
+
 }
 
 </style>
@@ -169,6 +209,8 @@ input{
 <body>
 
 <div class="container">
+
+  <!-- ESQUERDA -->
 
   <div class="left">
 
@@ -182,80 +224,133 @@ input{
 
     <div class="card">
 
-      <h2>💰 Metas</h2>
+      <h2 style="margin-bottom:20px;">
+        📊 META IDEAL
+      </h2>
 
-      <input
-        id="tituloMeta"
-        class="meta-title"
-        value="META IDEAL DE VENDAS"
+      <table
+        style="
+          width:100%;
+          border-collapse:collapse;
+          text-align:center;
+          font-weight:bold;
+          font-size:15px;
+        "
       >
 
-      <br><br>
+        <tr style="background:#5b84c9;color:black;">
 
-      <div class="ranking-item">
+          <td style="padding:8px;border:1px solid #222;">
+            META IDEAL
+          </td>
 
-        <span>Controle de Pragas</span>
+          <td colspan="2"
+          style="padding:8px;border:1px solid #222;">
 
-        <input
-          type="number"
-          id="controle"
-          class="percent-input"
-          value="0"
-          min="0"
-        >
+            <input
+              type="number"
+              id="metaIdeal"
+              class="metaIdeal"
+              value="60"
+              oninput="atualizarCores()"
+            > %
 
-      </div>
+          </td>
 
-      <div class="ranking-item">
+        </tr>
 
-        <span>Patrick</span>
+        <tr style="background:#6e95d6;color:black;">
 
-        <input
-          type="number"
-          id="patrick"
-          class="percent-input"
-          value="0"
-          min="0"
-        >
+          <td style="padding:8px;border:1px solid #222;">
+            VENDEDOR
+          </td>
 
-      </div>
+          <td style="padding:8px;border:1px solid #222;">
+            FATURAMENTO
+          </td>
 
-      <div class="ranking-item">
+          <td style="padding:8px;border:1px solid #222;">
+            ARMADILHAS
+          </td>
 
-        <span>Bruna</span>
+        </tr>
 
-        <input
-          type="number"
-          id="bruna"
-          class="percent-input"
-          value="0"
-          min="0"
-        >
+        <tr style="background:#efefef;color:black;">
+          <td style="padding:8px;border:1px solid #222;">BRUNA</td>
+          <td style="padding:8px;border:1px solid #222;">
+            <input type="number" value="58" class="metaCampo"> %
+          </td>
+          <td style="padding:8px;border:1px solid #222;">
+            <input type="number" value="61" class="metaCampo"> %
+          </td>
+        </tr>
 
-      </div>
+        <tr style="background:#efefef;color:black;">
+          <td style="padding:8px;border:1px solid #222;">PATRICK</td>
+          <td style="padding:8px;border:1px solid #222;">
+            <input type="number" value="39" class="metaCampo"> %
+          </td>
+          <td style="padding:8px;border:1px solid #222;">
+            <input type="number" value="42" class="metaCampo"> %
+          </td>
+        </tr>
 
-      <div class="ranking-item">
+        <tr style="background:#efefef;color:black;">
+          <td style="padding:8px;border:1px solid #222;">NAYARA</td>
+          <td style="padding:8px;border:1px solid #222;">
+            <input type="number" value="74" class="metaCampo"> %
+          </td>
+          <td style="padding:8px;border:1px solid #222;">
+            <input type="number" value="73" class="metaCampo"> %
+          </td>
+        </tr>
 
-        <span>Nayara</span>
+        <tr style="background:#efefef;color:black;">
+          <td style="padding:8px;border:1px solid #222;">C. DE PRAGAS</td>
+          <td style="padding:8px;border:1px solid #222;">
+            <input type="number" value="43" class="metaCampo"> %
+          </td>
+          <td style="padding:8px;border:1px solid #222;">
+            <input type="number" value="72" class="metaCampo"> %
+          </td>
+        </tr>
 
-        <input
-          type="number"
-          id="nayara"
-          class="percent-input"
-          value="0"
-          min="0"
-        >
+        <tr style="background:#efefef;color:black;">
+          <td style="padding:8px;border:1px solid #222;">GERAL INTERNAS</td>
+          <td style="padding:8px;border:1px solid #222;">
+            <input type="number" value="49" class="metaCampo"> %
+          </td>
+          <td style="padding:8px;border:1px solid #222;">
+            <input type="number" value="66" class="metaCampo"> %
+          </td>
+        </tr>
 
-      </div>
+        <tr style="background:#efefef;color:black;">
+          <td style="padding:8px;border:1px solid #222;">FAT GERAL</td>
+          <td style="padding:8px;border:1px solid #222;">
+            <input type="number" value="57" class="metaCampo"> %
+          </td>
+          <td style="padding:8px;border:1px solid #222;">
+            <input type="number" value="65" class="metaCampo"> %
+          </td>
+        </tr>
+
+      </table>
 
     </div>
 
   </div>
 
+  <!-- CENTRO -->
+
   <div class="center">
 
     <div id="ultimaLigacao">
       Última ligação: —
+    </div>
+
+    <div id="metaBatida">
+      🎉 META BATIDA 🎉
     </div>
 
     <div class="timer" id="timer">
@@ -267,6 +362,8 @@ input{
     </div>
 
   </div>
+
+  <!-- DIREITA -->
 
   <div class="right">
 
@@ -308,6 +405,14 @@ input{
         <button class="warning" onclick="maisTempo()">+</button>
         <button class="warning" onclick="menosTempo()">-</button>
 
+        <button onclick="togglePause()">
+          ⏸
+        </button>
+
+        <button onclick="desfazerLigacao()">
+          ↩
+        </button>
+
         <button class="danger" onclick="resetarTimer()">
           Timer
         </button>
@@ -325,7 +430,7 @@ input{
 </div>
 
 <audio id="som">
-  <source src="https://actions.google.com/sounds/v1/alarms/alarm_clock.ogg">
+  <source src="https://actions.google.com/sounds/v1/cartoon/concussive_hit_guitar_boing.ogg">
 </audio>
 
 <script>
@@ -345,9 +450,7 @@ const frases = [
 
 ];
 
-let vendedores = JSON.parse(
-  localStorage.getItem("vendedores")
-) || {
+let vendedores = {
 
   Solange:{d:0},
   Lucas:{d:0},
@@ -358,67 +461,11 @@ let vendedores = JSON.parse(
 
 };
 
-let total =
-  parseInt(localStorage.getItem("total")) || 0;
+let total = 0;
+let segundos = 0;
 
-let segundos =
-  parseInt(localStorage.getItem("segundos")) || 0;
-
-document.getElementById("total").innerText = total;
-
-document.getElementById("tituloMeta").value =
-  localStorage.getItem("tituloMeta")
-  || "META IDEAL DE VENDAS";
-
-document.getElementById("controle").value =
-  localStorage.getItem("controle") || 0;
-
-document.getElementById("patrick").value =
-  localStorage.getItem("patrick") || 0;
-
-document.getElementById("bruna").value =
-  localStorage.getItem("bruna") || 0;
-
-document.getElementById("nayara").value =
-  localStorage.getItem("nayara") || 0;
-
-function salvar(){
-
-  localStorage.setItem(
-    "vendedores",
-    JSON.stringify(vendedores)
-  );
-
-  localStorage.setItem("total",total);
-
-  localStorage.setItem("segundos",segundos);
-
-  localStorage.setItem(
-    "tituloMeta",
-    document.getElementById("tituloMeta").value
-  );
-
-  localStorage.setItem(
-    "controle",
-    document.getElementById("controle").value
-  );
-
-  localStorage.setItem(
-    "patrick",
-    document.getElementById("patrick").value
-  );
-
-  localStorage.setItem(
-    "bruna",
-    document.getElementById("bruna").value
-  );
-
-  localStorage.setItem(
-    "nayara",
-    document.getElementById("nayara").value
-  );
-
-}
+let pausado = false;
+let ultimaLigacao = null;
 
 function atualizarRanking(){
 
@@ -448,9 +495,59 @@ function atualizarRanking(){
 
 }
 
+function soltarConfete(){
+
+  for(let i=0;i<120;i++){
+
+    let confete =
+      document.createElement("div");
+
+    confete.classList.add("confete");
+
+    confete.style.left =
+      Math.random()*100 + "vw";
+
+    confete.style.background =
+      `hsl(${Math.random()*360},100%,50%)`;
+
+    confete.style.animationDuration =
+      (Math.random()*3+2) + "s";
+
+    document.body.appendChild(confete);
+
+    setTimeout(()=>{
+
+      confete.remove();
+
+    },5000);
+
+  }
+
+}
+
+function comemorarMeta(){
+
+  document.getElementById("som").play();
+
+  document.getElementById("metaBatida")
+  .style.display = "block";
+
+  soltarConfete();
+
+  setTimeout(()=>{
+
+    document.getElementById("metaBatida")
+    .style.display = "none";
+
+  },5000);
+
+}
+
 function ligar(nome){
 
   vendedores[nome].d++;
+
+  ultimaLigacao = nome;
 
   let agora = new Date();
 
@@ -468,6 +565,12 @@ function ligar(nome){
   document.getElementById("total").innerText =
     total;
 
+  if(total === 50){
+
+    comemorarMeta();
+
+  }
+
   atualizarRanking();
 
   segundos = 0;
@@ -477,11 +580,13 @@ function ligar(nome){
       Math.floor(Math.random()*frases.length)
     ];
 
-  salvar();
-
 }
 
 function atualizarTimer(){
+
+  if(pausado){
+    return;
+  }
 
   segundos++;
 
@@ -515,7 +620,70 @@ function atualizarTimer(){
 
   }
 
-  salvar();
+}
+
+function atualizarCores(){
+
+  let meta =
+    parseInt(
+      document.getElementById("metaIdeal").value
+    );
+
+  let limite = meta - 5;
+
+  let campos =
+    document.querySelectorAll(".metaCampo");
+
+  campos.forEach(campo=>{
+
+    let valor = parseInt(campo.value);
+
+    if(valor >= limite){
+
+      campo.classList.remove("vermelho");
+      campo.classList.add("verde");
+
+    }
+
+    else{
+
+      campo.classList.remove("verde");
+      campo.classList.add("vermelho");
+
+    }
+
+  });
+
+}
+
+function togglePause(){
+
+  pausado = !pausado;
+
+}
+
+function desfazerLigacao(){
+
+  if(!ultimaLigacao){
+    return;
+  }
+
+  if(vendedores[ultimaLigacao].d > 0){
+
+    vendedores[ultimaLigacao].d--;
+
+    total--;
+
+    if(total < 0){
+      total = 0;
+    }
+
+    document.getElementById("total").innerText =
+      total;
+
+    atualizarRanking();
+
+  }
 
 }
 
@@ -555,28 +723,19 @@ function resetarRanking(){
 
   atualizarRanking();
 
-  salvar();
-
 }
 
 setInterval(atualizarTimer,1000);
 
-document.getElementById("tituloMeta")
-.addEventListener("input",salvar);
+document.querySelectorAll(".metaCampo")
+.forEach(campo=>{
 
-document.getElementById("controle")
-.addEventListener("input",salvar);
+  campo.addEventListener("input",atualizarCores);
 
-document.getElementById("patrick")
-.addEventListener("input",salvar);
-
-document.getElementById("bruna")
-.addEventListener("input",salvar);
-
-document.getElementById("nayara")
-.addEventListener("input",salvar);
+});
 
 atualizarRanking();
+atualizarCores();
 
 </script>
 
