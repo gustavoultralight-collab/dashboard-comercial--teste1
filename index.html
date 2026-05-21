@@ -84,9 +84,11 @@ body{
 }
 
 @keyframes piscar{
+
   50%{
     opacity:0.3;
   }
+
 }
 
 .message{
@@ -113,14 +115,20 @@ body{
 }
 
 button{
+
   padding:14px;
   border:none;
   border-radius:10px;
+
   background:#00ff95;
+
   color:black;
+
   font-size:17px;
   font-weight:bold;
+
   cursor:pointer;
+
 }
 
 .warning{
@@ -133,26 +141,69 @@ button{
 }
 
 #ultimaLigacao{
+
   position:absolute;
   top:40px;
+
   font-size:28px;
   color:#00ff95;
+
   font-weight:bold;
+
+}
+
+#metaBatida{
+
+  position:absolute;
+  top:140px;
+
+  font-size:55px;
+  font-weight:bold;
+
+  color:#00ff95;
+
+  text-shadow:
+    0 0 10px #00ff95,
+    0 0 25px #00ff95;
+
+  display:none;
+
+  animation:pulsar 1s infinite;
+
+  z-index:999;
+
+}
+
+@keyframes pulsar{
+
+  50%{
+    transform:scale(1.08);
+  }
+
 }
 
 table input{
+
   border:none;
   background:transparent;
+
   text-align:center;
   font-weight:bold;
+
   outline:none;
-  width:55px;
+
+  width:80px;
+  font-size:30px;
+
 }
 
 .metaIdeal{
-  width:70px;
+
+  width:80px;
   color:black;
-  font-size:20px;
+
+  font-size:24px;
+
 }
 
 .verde{
@@ -164,40 +215,74 @@ table input{
 }
 
 .confete{
+
   position:absolute;
-  width:12px;
-  height:12px;
-  top:-20px;
-  animation:fall linear forwards;
+
+  width:14px;
+  height:14px;
+
+  border-radius:3px;
+
+  z-index:9999;
+
 }
 
-@keyframes fall{
+.cair{
+
+  animation:cair 4s linear forwards;
+
+}
+
+.subir{
+
+  animation:subir 3s linear forwards;
+
+}
+
+@keyframes cair{
+
+  from{
+
+    transform:
+      translateY(-100px)
+      rotate(0deg);
+
+    opacity:1;
+
+  }
 
   to{
-    transform:translateY(120vh) rotate(720deg);
+
+    transform:
+      translateY(120vh)
+      rotate(900deg);
+
     opacity:0;
+
   }
 
 }
 
-#metaBatida{
+@keyframes subir{
 
-  position:absolute;
-  top:45%;
-  font-size:70px;
-  font-weight:bold;
-  color:#00ff95;
-  z-index:999;
-  display:none;
-  animation:pulse 1s infinite;
-  text-shadow:0 0 20px #00ff95;
+  from{
 
-}
+    transform:
+      translateY(100vh)
+      rotate(0deg);
 
-@keyframes pulse{
+    opacity:1;
 
-  50%{
-    transform:scale(1.08);
+  }
+
+  to{
+
+    transform:
+      translateY(-200px)
+      rotate(900deg);
+
+    opacity:0;
+
   }
 
 }
@@ -429,8 +514,12 @@ table input{
 
 </div>
 
+<audio id="somMeta">
+  <source src="https://actions.google.com/sounds/v1/crowds/applause_large_crowd.ogg">
+</audio>
+
 <audio id="som">
-  <source src="https://actions.google.com/sounds/v1/cartoon/concussive_hit_guitar_boing.ogg">
+  <source src="https://actions.google.com/sounds/v1/alarms/alarm_clock.ogg">
 </audio>
 
 <script>
@@ -465,6 +554,7 @@ let total = 0;
 let segundos = 0;
 
 let pausado = false;
+
 let ultimaLigacao = null;
 
 function atualizarRanking(){
@@ -497,12 +587,19 @@ function atualizarRanking(){
 
 function soltarConfete(){
 
-  for(let i=0;i<120;i++){
+  for(let i=0;i<250;i++){
 
     let confete =
       document.createElement("div");
 
     confete.classList.add("confete");
+
+    let subir =
+      Math.random() > 0.5;
+
+    confete.classList.add(
+      subir ? "subir" : "cair"
+    );
 
     confete.style.left =
       Math.random()*100 + "vw";
@@ -527,19 +624,20 @@ function soltarConfete(){
 
 function comemorarMeta(){
 
-  document.getElementById("som").play();
+  document.getElementById("somMeta").play();
 
-  document.getElementById("metaBatida")
-  .style.display = "block";
+  let meta =
+    document.getElementById("metaBatida");
+
+  meta.style.display = "block";
 
   soltarConfete();
 
   setTimeout(()=>{
 
-    document.getElementById("metaBatida")
-    .style.display = "none";
+    meta.style.display = "none";
 
-  },5000);
+  },6000);
 
 }
 
@@ -565,7 +663,7 @@ function ligar(nome){
   document.getElementById("total").innerText =
     total;
 
-  if(total === 50){
+  if(total == 50){
 
     comemorarMeta();
 
