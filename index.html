@@ -157,18 +157,19 @@ button{
   position:absolute;
   top:140px;
 
-  font-size:55px;
+  font-size:70px;
   font-weight:bold;
 
   color:#00ff95;
 
   text-shadow:
     0 0 10px #00ff95,
-    0 0 25px #00ff95;
+    0 0 25px #00ff95,
+    0 0 50px #00ff95;
 
   display:none;
 
-  animation:pulsar 1s infinite;
+  animation:pulsar 0.7s infinite;
 
   z-index:999;
 
@@ -177,7 +178,7 @@ button{
 @keyframes pulsar{
 
   50%{
-    transform:scale(1.08);
+    transform:scale(1.12);
   }
 
 }
@@ -216,74 +217,11 @@ table input{
 
 .confete{
 
-  position:absolute;
+  position:fixed;
 
-  width:14px;
-  height:14px;
+  z-index:99999;
 
-  border-radius:3px;
-
-  z-index:9999;
-
-}
-
-.cair{
-
-  animation:cair 4s linear forwards;
-
-}
-
-.subir{
-
-  animation:subir 3s linear forwards;
-
-}
-
-@keyframes cair{
-
-  from{
-
-    transform:
-      translateY(-100px)
-      rotate(0deg);
-
-    opacity:1;
-
-  }
-
-  to{
-
-    transform:
-      translateY(120vh)
-      rotate(900deg);
-
-    opacity:0;
-
-  }
-
-}
-
-@keyframes subir{
-
-  from{
-
-    transform:
-      translateY(100vh)
-      rotate(0deg);
-
-    opacity:1;
-
-  }
-
-  to{
-
-    transform:
-      translateY(-200px)
-      rotate(900deg);
-
-    opacity:0;
-
-  }
+  pointer-events:none;
 
 }
 
@@ -573,28 +511,81 @@ function atualizarRanking(){
 
 function soltarConfete(){
 
-  for(let i=0;i<250;i++){
+  for(let i=0;i<1200;i++){
 
     let confete =
       document.createElement("div");
 
     confete.classList.add("confete");
 
-    let subir =
-      Math.random() > 0.5;
+    confete.style.width =
+      (Math.random()*18+6) + "px";
 
-    confete.classList.add(
-      subir ? "subir" : "cair"
-    );
+    confete.style.height =
+      confete.style.width;
+
+    confete.style.borderRadius =
+      Math.random() > 0.5
+      ? "50%"
+      : "2px";
 
     confete.style.left =
       Math.random()*100 + "vw";
 
+    confete.style.top =
+      Math.random()*100 + "vh";
+
     confete.style.background =
       `hsl(${Math.random()*360},100%,50%)`;
 
-    confete.style.animationDuration =
-      (Math.random()*3+2) + "s";
+    let x =
+      (Math.random()-0.5)*2500;
+
+    let y =
+      (Math.random()-0.5)*2500;
+
+    let rot =
+      Math.random()*4000;
+
+    let dur =
+      Math.random()*4+3;
+
+    confete.animate(
+
+      [
+
+        {
+
+          transform:
+            "translate(0,0) rotate(0deg)",
+
+          opacity:1
+
+        },
+
+        {
+
+          transform:
+            `translate(${x}px,${y}px)
+             rotate(${rot}deg)`,
+
+          opacity:0
+
+        }
+
+      ],
+
+      {
+
+        duration:dur*1000,
+
+        easing:"cubic-bezier(.17,.67,.83,.67)",
+
+        fill:"forwards"
+
+      }
+
+    );
 
     document.body.appendChild(confete);
 
@@ -602,7 +593,7 @@ function soltarConfete(){
 
       confete.remove();
 
-    },5000);
+    },7000);
 
   }
 
@@ -614,7 +605,7 @@ function comemorarMeta(){
     new (window.AudioContext ||
     window.webkitAudioContext)();
 
-  function beep(freq,time){
+  function tocar(freq,dur,tipo="sawtooth"){
 
     const osc =
       ctx.createOscillator();
@@ -628,23 +619,35 @@ function comemorarMeta(){
 
     osc.frequency.value = freq;
 
-    osc.type = "triangle";
+    osc.type = tipo;
 
-    osc.start();
+    gain.gain.setValueAtTime(
+      0.25,
+      ctx.currentTime
+    );
 
     gain.gain.exponentialRampToValueAtTime(
       0.0001,
-      ctx.currentTime + time
+      ctx.currentTime + dur
     );
 
-    osc.stop(ctx.currentTime + time);
+    osc.start();
+
+    osc.stop(ctx.currentTime + dur);
 
   }
 
-  beep(523,0.2);
-  setTimeout(()=>beep(659,0.2),150);
-  setTimeout(()=>beep(784,0.3),300);
-  setTimeout(()=>beep(1046,0.5),500);
+  tocar(523,0.15);
+  setTimeout(()=>tocar(659,0.15),120);
+  setTimeout(()=>tocar(784,0.18),240);
+  setTimeout(()=>tocar(1046,0.25),360);
+  setTimeout(()=>tocar(1318,0.35),520);
+
+  setTimeout(()=>{
+
+    tocar(880,0.5,"triangle");
+
+  },650);
 
   let meta =
     document.getElementById("metaBatida");
@@ -652,6 +655,27 @@ function comemorarMeta(){
   meta.style.display = "block";
 
   soltarConfete();
+
+  document.body.animate(
+
+    [
+
+      {transform:"translateX(0px)"},
+      {transform:"translateX(-8px)"},
+      {transform:"translateX(8px)"},
+      {transform:"translateX(-5px)"},
+      {transform:"translateX(5px)"},
+      {transform:"translateX(0px)"}
+
+    ],
+
+    {
+
+      duration:700
+
+    }
+
+  );
 
   setTimeout(()=>{
 
