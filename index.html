@@ -295,8 +295,6 @@ table input{
 
 <div class="container">
 
-  <!-- ESQUERDA -->
-
   <div class="left">
 
     <div class="card">
@@ -426,8 +424,6 @@ table input{
 
   </div>
 
-  <!-- CENTRO -->
-
   <div class="center">
 
     <div id="ultimaLigacao">
@@ -447,8 +443,6 @@ table input{
     </div>
 
   </div>
-
-  <!-- DIREITA -->
 
   <div class="right">
 
@@ -513,19 +507,6 @@ table input{
   </div>
 
 </div>
-
-<audio id="somMeta" preload="auto">
-
-  <source
-    src="https://www.soundjay.com/human/applause-8.mp3"
-    type="audio/mpeg"
-  >
-
-</audio>
-
-<audio id="som">
-  <source src="https://actions.google.com/sounds/v1/alarms/alarm_clock.ogg">
-</audio>
 
 <script>
 
@@ -629,13 +610,41 @@ function soltarConfete(){
 
 function comemorarMeta(){
 
-  const audio =
-    document.getElementById("somMeta");
+  const ctx =
+    new (window.AudioContext ||
+    window.webkitAudioContext)();
 
-  audio.currentTime = 0;
+  function beep(freq,time){
 
-  audio.play()
-  .catch(e => console.log(e));
+    const osc =
+      ctx.createOscillator();
+
+    const gain =
+      ctx.createGain();
+
+    osc.connect(gain);
+
+    gain.connect(ctx.destination);
+
+    osc.frequency.value = freq;
+
+    osc.type = "triangle";
+
+    osc.start();
+
+    gain.gain.exponentialRampToValueAtTime(
+      0.0001,
+      ctx.currentTime + time
+    );
+
+    osc.stop(ctx.currentTime + time);
+
+  }
+
+  beep(523,0.2);
+  setTimeout(()=>beep(659,0.2),150);
+  setTimeout(()=>beep(784,0.3),300);
+  setTimeout(()=>beep(1046,0.5),500);
 
   let meta =
     document.getElementById("metaBatida");
@@ -717,8 +726,6 @@ function atualizarTimer(){
 
     document.getElementById("message").innerText =
       "⚠ SEM LIGAÇÕES HÁ 20 MINUTOS ⚠";
-
-    document.getElementById("som").play();
 
   }
 
