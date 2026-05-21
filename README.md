@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Comercial Ultralight</title>
+
+<style>
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:Arial,sans-serif;
+}
+
+body{
+  background:#050505;
+  color:white;
+  overflow:hidden;
+}
+
+.container{
+  display:flex;
+  height:100vh;
+  gap:20px;
+  padding:20px;
+}
+
+.left,
+.right{
+  width:24%;
+  display:flex;
+  flex-direction:column;
+  gap:20px;
+}
+
+.center{
+  flex:1;
+  background:#101010;
+  border-radius:20px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  position:relative;
+  overflow:hidden;
+}
+
+.card{
+  background:#101010;
+  border-radius:20px;
+  padding:20px;
+}
+
+.card h2{
+  margin-bottom:15px;
+  font-size:24px;
+}
+
+.ranking-item{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:12px;
+  border-radius:12px;
+  background:#181818;
+  margin-bottom:10px;
+  font-size:20px;
+}
+
+.timer{
+  font-size:130px;
+  font-weight:bold;
+  color:#00ff95;
+}
+
+.alert{
+  color:red;
+  animation:piscar 1s infinite;
+}
+
+@keyframes piscar{
+
+  50%{
+    opacity:0.3;
+  }
+
+}
+
+.message{
+  position:absolute;
+  bottom:40px;
+  width:100%;
+  text-align:center;
+  font-size:42px;
+  color:#888;
+  padding:0 30px;
+  font-weight:bold;
+}
+
+.meta{
+  font-size:55px;
+  color:#00ff95;
+  font-weight:bold;
+}
+
+.button-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+
+button{
+
+  padding:14px;
+  border:none;
+  border-radius:10px;
+
+  background:#00ff95;
+
+  color:black;
+
+  font-size:17px;
+  font-weight:bold;
+
+  cursor:pointer;
+
+}
+
+.warning{
+  background:#ffb300;
+}
+
+.danger{
+  background:red;
+  color:white;
+}
+
+#ultimaLigacao{
+
+  position:absolute;
+  top:40px;
+
+  font-size:28px;
+  color:#00ff95;
+
+  font-weight:bold;
+
+}
+
+#metaBatida{
+
+  position:absolute;
+  top:140px;
+
+  font-size:55px;
+  font-weight:bold;
+
+  color:#00ff95;
+
+  text-shadow:
+    0 0 10px #00ff95,
+    0 0 25px #00ff95;
+
+  display:none;
+
+  animation:pulsar 1s infinite;
+
+  z-index:999;
+
+}
+
+@keyframes pulsar{
+
+  50%{
+    transform:scale(1.08);
+  }
+
+}
+
+table input{
+
+  border:none;
+  background:transparent;
+
+  text-align:center;
+  font-weight:bold;
+
+  outline:none;
+
+  width:80px;
+  font-size:30px;
+
+}
+
+.metaIdeal{
+
+  width:80px;
+  color:black;
+
+  font-size:24px;
+
+}
+
+.verde{
+  color:#00c853;
+}
+
+.vermelho{
+  color:red;
+}
+
+.confete{
+
+  position:absolute;
+
+  width:14px;
+  height:14px;
+
+  border-radius:3px;
+
+  z-index:9999;
+
+}
+
+.cair{
+
+  animation:cair 4s linear forwards;
+
+}
+
+.subir{
+
+  animation:subir 3s linear forwards;
+
+}
+
+@keyframes cair{
+
+  from{
+
+    transform:
+      translateY(-100px)
+      rotate(0deg);
+
+    opacity:1;
+
+  }
+
+  to{
+
+    transform:
+      translateY(120vh)
+      rotate(900deg);
+
+    opacity:0;
+
+  }
+
+}
+
+@keyframes subir{
+
+  from{
+
+    transform:
+      translateY(100vh)
+      rotate(0deg);
+
+    opacity:1;
+
+  }
+
+  to{
+
+    transform:
+      translateY(-200px)
+      rotate(900deg);
+
+    opacity:0;
+
+  }
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+  <!-- ESQUERDA -->
+
+  <div class="left">
+
+    <div class="card">
+
+      <h2>🏆 Ranking Diário</h2>
+
+      <div id="ranking"></div>
+
+    </div>
+
+    <div class="card">
+
+      <h2 style="margin-bottom:20px;">
+        📊 META IDEAL
+      </h2>
+
+      <table
+        style="
+          width:100%;
+          border-collapse:collapse;
+          text-align:center;
+          font-weight:bold;
+          font-size:15px;
+        "
+      >
+
+        <tr style="background:#5b84c9;color:black;">
+
+          <td style="padding:8px;border:1px solid #222;">
+            META IDEAL
+          </td>
+
+          <td colspan="2"
+          style="padding:8px;border:1px solid #222;">
+
+            <input
+              type="number"
+              id="metaIdeal"
+              class="metaIdeal"
+              value="60"
+              oninput="atualizarCores()"
+            > %
+
+          </td>
+
+        </tr>
+
+        <tr style="background:#6e95d6;color:black;">
+
+          <td style="padding:8px;border:1px solid #222;">
+            VENDEDOR
+          </td>
+
+          <td style="padding:8px;border:1px solid #222;">
+            FATURAMENTO
+          </td>
+
+          <td style="padding:8px;border:1px solid #222;">
+            ARMADILHAS
+          </td>
+
+        </tr>
+
+        <tr style="background:#efefef;color:black;">
+          <td style="padding:8px;border:1px solid #222;">BRUNA</td>
+          <td style="padding:8px;border:1px solid #222;">
+            <input type="number" value="58" class="metaCampo"> %
+          </td>
+          <td style="padding:8px;border:1px solid #222;">
+            <input type="number" value="61" class="metaCampo"> %
+          </td>
+        </tr>
+
+        <tr style="background:#efefef;color:black;">
+          <td style="padding:8px;border:1px solid #222;">PATRICK</td>
+          <td style="padding:8px;border:1px solid #222;">
+            <input type="number" value="39" class="metaCampo"> %
+          </td>
+          <td style="padding:8px;border:1px solid #222;">
+            <input type="number" value="42" class="metaCampo"> %
+          </td>
+        </tr>
+
+        <tr style="background:#efefef;color:black;">
+          <td style="padding:8px;border:1px solid #222;">NAYARA</td>
+          <td style="padding:8px;border:1px solid #222;">
+            <input type="number" value="74" class="metaCampo"> %
+          </td>
+          <td style="padding:8px;border:1px solid #222;">
+            <input type="number" value="73" class="metaCampo"> %
+          </td>
+        </tr>
+
+        <tr style="background:#efefef;color:black;">
+          <td style="padding:8px;border:1px solid #222;">C. DE PRAGAS</td>
+          <td style="padding:8px;border:1px solid #222;">
+            <input type="number" value="43" class="metaCampo"> %
+          </td>
+          <td style="padding:8px;border:1px solid #222;">
+            <input type="number" value="72" class="metaCampo"> %
+          </td>
+        </tr>
+
+        <tr style="background:#efefef;color:black;">
+          <td style="padding:8px;border:1px solid #222;">GERAL INTERNAS</td>
+          <td style="padding:8px;border:1px solid #222;">
+            <input type="number" value="49" class="metaCampo"> %
+          </td>
+          <td style="padding:8px;border:1px solid #222;">
+            <input type="number" value="66" class="metaCampo"> %
+          </td>
+        </tr>
+
+        <tr style="background:#efefef;color:black;">
+          <td style="padding:8px;border:1px solid #222;">FAT GERAL</td>
+          <td style="padding:8px;border:1px solid #222;">
+            <input type="number" value="57" class="metaCampo"> %
+          </td>
+          <td style="padding:8px;border:1px solid #222;">
+            <input type="number" value="65" class="metaCampo"> %
+          </td>
+        </tr>
+
+      </table>
+
+    </div>
+
+  </div>
+
+  <!-- CENTRO -->
+
+  <div class="center">
+
+    <div id="ultimaLigacao">
+      Última ligação: —
+    </div>
+
+    <div id="metaBatida">
+      🎉 META BATIDA 🎉
+    </div>
+
+    <div class="timer" id="timer">
+      00:00
+    </div>
+
+    <div class="message" id="message">
+      Os clientes não vão ligar sozinhos.
+    </div>
+
+  </div>
+
+  <!-- DIREITA -->
+
+  <div class="right">
+
+    <div class="card">
+
+      <h2>📞 Ligações de Hoje</h2>
+
+      <div class="meta" id="total">
+        0
+      </div>
+
+    </div>
+
+    <div class="card">
+
+      <h2>🎯 Meta</h2>
+
+      <div class="meta">
+        50
+      </div>
+
+    </div>
+
+    <div class="card">
+
+      <h2>🎮 Controle</h2>
+
+      <div class="button-grid">
+
+        <button onclick="ligar('Solange')">Sol</button>
+        <button onclick="ligar('Lucas')">Lucas</button>
+
+        <button onclick="ligar('Patrick')">Patrick</button>
+        <button onclick="ligar('Bruna')">Bruna</button>
+
+        <button onclick="ligar('Nayara')">Nayara</button>
+        <button onclick="ligar('Enrico')">Enrico</button>
+
+        <button class="warning" onclick="maisTempo()">+</button>
+        <button class="warning" onclick="menosTempo()">-</button>
+
+        <button onclick="togglePause()">
+          ⏸
+        </button>
+
+        <button onclick="desfazerLigacao()">
+          ↩
+        </button>
+
+        <button class="danger" onclick="resetarTimer()">
+          Timer
+        </button>
+
+        <button class="danger" onclick="resetarRanking()">
+          Diário
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+<audio id="somMeta">
+  <source src="https://actions.google.com/sounds/v1/crowds/applause_large_crowd.ogg">
+</audio>
+
+<audio id="som">
+  <source src="https://actions.google.com/sounds/v1/alarms/alarm_clock.ogg">
+</audio>
+
+<script>
+
+const frases = [
+
+  "Doeu ligar para o cliente?",
+  "O telefone não morde.",
+  "A meta não bate sozinha.",
+  "Silêncio demais pra equipe comercial.",
+  "Mais ligação = mais venda.",
+  "O teclado não fecha venda.",
+  "Cliente não responde? Liga.",
+  "WhatsApp não fecha tudo.",
+  "Bora movimentar esse comercial.",
+  "Sem ligação sem negociação."
+
+];
+
+let vendedores = {
+
+  Solange:{d:0},
+  Lucas:{d:0},
+  Patrick:{d:0},
+  Bruna:{d:0},
+  Nayara:{d:0},
+  Enrico:{d:0}
+
+};
+
+let total = 0;
+let segundos = 0;
+
+let pausado = false;
+
+let ultimaLigacao = null;
+
+function atualizarRanking(){
+
+  let html = "";
+
+  Object.entries(vendedores)
+
+  .sort((a,b)=>b[1].d-a[1].d)
+
+  .forEach((v,i)=>{
+
+    html += `
+
+      <div class="ranking-item">
+
+        <span>${i+1}. ${v[0]}</span>
+
+        <span>${v[1].d}</span>
+
+      </div>
+
+    `;
+
+  });
+
+  document.getElementById("ranking").innerHTML = html;
+
+}
+
+function soltarConfete(){
+
+  for(let i=0;i<250;i++){
+
+    let confete =
+      document.createElement("div");
+
+    confete.classList.add("confete");
+
+    let subir =
+      Math.random() > 0.5;
+
+    confete.classList.add(
+      subir ? "subir" : "cair"
+    );
+
+    confete.style.left =
+      Math.random()*100 + "vw";
+
+    confete.style.background =
+      `hsl(${Math.random()*360},100%,50%)`;
+
+    confete.style.animationDuration =
+      (Math.random()*3+2) + "s";
+
+    document.body.appendChild(confete);
+
+    setTimeout(()=>{
+
+      confete.remove();
+
+    },5000);
+
+  }
+
+}
+
+function comemorarMeta(){
+
+  document.getElementById("somMeta").play();
+
+  let meta =
+    document.getElementById("metaBatida");
+
+  meta.style.display = "block";
+
+  soltarConfete();
+
+  setTimeout(()=>{
+
+    meta.style.display = "none";
+
+  },6000);
+
+}
+
+function ligar(nome){
+
+  vendedores[nome].d++;
+
+  ultimaLigacao = nome;
+
+  let agora = new Date();
+
+  let hora =
+    agora.getHours().toString().padStart(2,"0");
+
+  let minuto =
+    agora.getMinutes().toString().padStart(2,"0");
+
+  document.getElementById("ultimaLigacao").innerText =
+    `Última ligação: ${nome} • ${hora}:${minuto}`;
+
+  total++;
+
+  document.getElementById("total").innerText =
+    total;
+
+  if(total == 50){
+
+    comemorarMeta();
+
+  }
+
+  atualizarRanking();
+
+  segundos = 0;
+
+  document.getElementById("message").innerText =
+    frases[
+      Math.floor(Math.random()*frases.length)
+    ];
+
+}
+
+function atualizarTimer(){
+
+  if(pausado){
+    return;
+  }
+
+  segundos++;
+
+  let m =
+    String(Math.floor(segundos/60))
+    .padStart(2,"0");
+
+  let s =
+    String(segundos%60)
+    .padStart(2,"0");
+
+  document.getElementById("timer").innerText =
+    `${m}:${s}`;
+
+  if(segundos >= 1200){
+
+    document.getElementById("timer")
+      .classList.add("alert");
+
+    document.getElementById("message").innerText =
+      "⚠ SEM LIGAÇÕES HÁ 20 MINUTOS ⚠";
+
+    document.getElementById("som").play();
+
+  }
+
+  else{
+
+    document.getElementById("timer")
+      .classList.remove("alert");
+
+  }
+
+}
+
+function atualizarCores(){
+
+  let meta =
+    parseInt(
+      document.getElementById("metaIdeal").value
+    );
+
+  let limite = meta - 5;
+
+  let campos =
+    document.querySelectorAll(".metaCampo");
+
+  campos.forEach(campo=>{
+
+    let valor = parseInt(campo.value);
+
+    if(valor >= limite){
+
+      campo.classList.remove("vermelho");
+      campo.classList.add("verde");
+
+    }
+
+    else{
+
+      campo.classList.remove("verde");
+      campo.classList.add("vermelho");
+
+    }
+
+  });
+
+}
+
+function togglePause(){
+
+  pausado = !pausado;
+
+}
+
+function desfazerLigacao(){
+
+  if(!ultimaLigacao){
+    return;
+  }
+
+  if(vendedores[ultimaLigacao].d > 0){
+
+    vendedores[ultimaLigacao].d--;
+
+    total--;
+
+    if(total < 0){
+      total = 0;
+    }
+
+    document.getElementById("total").innerText =
+      total;
+
+    atualizarRanking();
+
+  }
+
+}
+
+function maisTempo(){
+
+  segundos += 60;
+
+}
+
+function menosTempo(){
+
+  segundos -= 60;
+
+  if(segundos < 0){
+    segundos = 0;
+  }
+
+}
+
+function resetarTimer(){
+
+  segundos = 0;
+
+}
+
+function resetarRanking(){
+
+  for(let n in vendedores){
+
+    vendedores[n].d = 0;
+
+  }
+
+  total = 0;
+
+  document.getElementById("total").innerText = 0;
+
+  atualizarRanking();
+
+}
+
+setInterval(atualizarTimer,1000);
+
+document.querySelectorAll(".metaCampo")
+.forEach(campo=>{
+
+  campo.addEventListener("input",atualizarCores);
+
+});
+
+atualizarRanking();
+atualizarCores();
+
+</script>
+
+</body>
+
+</html>
